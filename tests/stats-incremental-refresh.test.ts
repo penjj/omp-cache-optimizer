@@ -172,7 +172,7 @@ function within<T>(promise: Promise<T>, ms: number, label: string): Promise<T> {
 }
 
 const requestsOf = (status: string | undefined): number | undefined => {
-  const match = /缓存请求命中次数：(\d+)\/(\d+) 次/.exec(status ?? "");
+  const match = /命中次数：(\d+)\/(\d+) 次/.exec(status ?? "");
   return match ? Number(match[2]) : undefined;
 };
 
@@ -361,7 +361,7 @@ describe("tiered shard index", () => {
       const id = await writeShard(h.I, { session: "other", updatedAt: now - 3 * HOUR, requests: 3 });
       // A filesystem without inodes and with coarse timestamps: the identity never changes.
       h.I.setStatsFsTestHooks({ shardStat: (_path: string, info: any) => { info.ino = 0; info.mtimeMs = 2000; info.ctimeMs = 2000; info.birthtimeMs = 2000; return info; } });
-      const total = () => { const match = /缓存请求命中次数：(\d+)\/(\d+) 次/.exec(h.statuses.at(-1) ?? ""); return match ? Number(match[2]) : -1; };
+      const total = () => { const match = /命中次数：(\d+)\/(\d+) 次/.exec(h.statuses.at(-1) ?? ""); return match ? Number(match[2]) : -1; };
       try {
         await withEnv({ [h.I.STATS_VERIFY_ENV]: "1" }, async () => {
           const { warnings } = await captureWarnings(async () => {

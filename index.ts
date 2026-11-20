@@ -1586,7 +1586,7 @@ export default function (pi: ExtensionAPI) {
     if (statusText === lastStatusText) return;
 
     lastStatusText = statusText;
-    const displayText = statusText === undefined ? undefined : ctx.ui.theme.fg("dim", statusText);
+    const displayText = statusText === undefined ? undefined : (ctx.ui.theme?.fg("dim", statusText) ?? statusText);
     ctx.ui.setStatus(STATUS_KEY, displayText);
   }
 

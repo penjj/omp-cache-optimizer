@@ -11,12 +11,12 @@ describe("footer status separation and command completion", () => {
   test("leaves footer status text unchanged (OMP adds its own separator)", () => {
     // OMP 状态栏自己加分隔点，prefixFooterStatus 是恒等函数。
     assert.equal(
-      internals.prefixFooterStatus("OpenAI Cache | 缓存命中率：0%"),
-      "OpenAI Cache | 缓存命中率：0%",
+      internals.prefixFooterStatus("OpenAI Cache - 缓存率：0.00%"),
+      "OpenAI Cache - 缓存率：0.00%",
     );
     assert.equal(
-      internals.prefixFooterStatus("缓存优化已关闭 · OpenAI Cache | 缓存命中率：0% ⚠️ 配置"),
-      "缓存优化已关闭 · OpenAI Cache | 缓存命中率：0% ⚠️ 配置",
+      internals.prefixFooterStatus("缓存优化已关闭 · OpenAI Cache - 缓存率：0.00% ⚠️ 配置"),
+      "缓存优化已关闭 · OpenAI Cache - 缓存率：0.00% ⚠️ 配置",
     );
     assert.equal(internals.prefixFooterStatus(undefined), undefined);
   });
@@ -34,7 +34,7 @@ describe("footer status separation and command completion", () => {
           totalInputTokens: 56_100_000,
         },
       ),
-      "OpenAI Cache | 缓存命中率：93% | 缓存请求命中次数：224/234 次 | 缓存token/总输入：52.2M/56.1M",
+      "OpenAI Cache - 缓存率：93.05% - 命中次数：224/234 次 - 缓存tok/总输入：52.2M/56.1M",
     );
   });
 
@@ -92,7 +92,7 @@ describe("footer status separation and command completion", () => {
       await freshModule.__internals_for_tests.waitForStatsRestore();
 
       assert.equal(statuses.at(-1)?.key, "omp-cache-stats");
-      assert.match(statuses.at(-1)?.value ?? "", /^OpenAI Cache \| 缓存命中率：/);
+      assert.match(statuses.at(-1)?.value ?? "", /^OpenAI Cache - 缓存率：/);
     } finally {
       if (previousAgentDir === undefined) delete process.env.PI_CODING_AGENT_DIR;
       else process.env.PI_CODING_AGENT_DIR = previousAgentDir;

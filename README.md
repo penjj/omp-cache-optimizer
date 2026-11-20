@@ -143,16 +143,16 @@ YAML 的注释、锚点和格式无法被可靠地外科式改写，所以本扩
 示例 footer：
 
 ```text
-OpenAI Cache | 缓存命中率：40% | 最近2次token命中率：80% | 缓存请求命中次数：3/10 次 | 缓存token/总输入：3.00k/7.50k ⚠️ 配置
+HY - 缓存率：40.00% - 近10次 80.00% - 命中次数：3/10 次 - 缓存tok/总输入：3.00M/7.50M ⚠️ 配置
 ```
 
 | 部分 | 示例 | 说明 |
 |---|---|---|
-| 适配器标签 | `OpenAI Cache` | 识别到的模型家族 |
-| **缓存命中率** | `40%` | 主指标（按 token）：缓存 input tokens ÷ 总 input tokens |
-| 最近N次token命中率 | `最近2次token命中率：80%` | 本 session 最近最多 10 次有效请求的按 token 命中率（`total` 模式不显示） |
-| 缓存请求命中次数 | `3/10 次` | `cacheRead > 0` 的请求数 / 总请求数；没有 usage 的失败 / 中止请求不计 |
-| 缓存token/总输入 | `3.00k/7.50k` | k/M 缩写 |
+| 适配器标签 | `HY` / `OpenAI Cache` | 识别到的模型家族（HY = 混元/HY 系列） |
+| **缓存率** | `40.00%` | 主指标（按 token）：缓存 input tokens ÷ 总 input tokens，两位小数 |
+| 近N次 | `近10次 80.00%` | 本 session 最近最多 10 次有效请求的按 token 命中率（`total` 模式不显示） |
+| 命中次数 | `3/10 次` | `cacheRead > 0` 的请求数 / 总请求数；没有 usage 的失败 / 中止请求不计 |
+| 缓存tok/总输入 | `3.00M/7.50M` | k/M 缩写 |
 | 写入token | `写入token：1.20k` | 新写入 prompt cache 的 tokens（Claude） |
 | `⚠️ 配置` | 末尾 | 当前模型缺少可安全修复的 compat，运行 `/cache-optimizer fix` |
 | `缓存优化已关闭 ·` | 前缀 | `/cache-optimizer disable` 后的对比模式 |
@@ -163,7 +163,7 @@ Footer 模式：`session`（默认，当前 OMP 会话）、`total`（今天本�
 
 `/cache-optimizer stats` 与 `doctor` 会显示最近 10 次 provider 请求的 prompt 诊断：是否启用 prompt 改写、观测到的 system prompt 指纹组数、`prompt_cache_key` 来自 header / 项目稳定 / 会话 / 自定义 / 未注入的次数。只记录 SHA-256 的 16 位截断指纹和来源类别，只保存在当前进程内存里，绝不保存 prompt、payload、session ID、cache key 或 API key 原文。
 
-支持的 footer label 包括：DS、Claude、OpenAI、Gemini、Kimi、Qwen、GLM、MiniMax、Mimo、Hunyuan、Mistral、Grok、Llama、Nemotron、Cohere、Yi、Doubao、ERNIE、Baichuan、StepFun、Spark、InternLM、Gemma、Phi、Jamba、Solar、Sonar、Nova、Reka、Falcon、DBRX、MPT、StableLM、Aquila、EXAONE、HyperCLOVA、Luminous、Hermes、Granite、Arctic、Pangu、SenseNova、Zhinao、MiniCPM、XVERSE、Orion、OpenChat、Vicuna、Wizard、Zephyr、Dolphin、OpenOrca、Starling、BLOOM、RWKV、Aya。适配器选择只看模型 id/name（以及 assistant message 的 model/name），不看 API 形状。
+支持的 footer label 包括：DS、Claude、OpenAI、Gemini、Kimi、Qwen、GLM、MiniMax、Mimo、HY（混元/HY 系列）、Mistral、Grok、Llama、Nemotron、Cohere、Yi、Doubao、ERNIE、Baichuan、StepFun、Spark、InternLM、Gemma、Phi、Jamba、Solar、Sonar、Nova、Reka、Falcon、DBRX、MPT、StableLM、Aquila、EXAONE、HyperCLOVA、Luminous、Hermes、Granite、Arctic、Pangu、SenseNova、Zhinao、MiniCPM、XVERSE、Orion、OpenChat、Vicuna、Wizard、Zephyr、Dolphin、OpenOrca、Starling、BLOOM、RWKV、Aya。适配器选择只看模型 id/name（以及 assistant message 的 model/name），不看 API 形状。
 
 ## Router / Virtual-channel 扩展作者指南
 

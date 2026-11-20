@@ -724,7 +724,7 @@ describe("v7 shard persistence and aggregation", () => {
     assert.match(sessionOutput, /范围：当前 session/);
     assert.match(sessionOutput, /proxy\/gpt-5\.5/);
     assert.match(sessionOutput, /anthropic\/claude-opus-5/);
-    assert.match(sessionOutput, /汇总：4\/5 次 · 660\.0k\/839\.0k tok · 79%/);
+    assert.match(sessionOutput, /汇总：4\/5 次 · 660\.0k\/839\.0k tok · 78\.67%/);
 
     const aggregate = {
       bySession: { current: current, other: { "proxy/gpt-5.5": stats(3, "2026-08-20") } },
@@ -742,7 +742,7 @@ describe("v7 shard persistence and aggregation", () => {
     const allOutput = internals.buildAllStatsOutput(aggregate);
     assert.match(allOutput, /范围：本机所有 session/);
     assert.match(allOutput, /Session：2 · 实例：2/);
-    assert.match(allOutput, /汇总：4\/5 次 · 660\.0k\/839\.0k tok · 79%/);
+    assert.match(allOutput, /汇总：4\/5 次 · 660\.0k\/839\.0k tok · 78\.67%/);
   });
 });
 

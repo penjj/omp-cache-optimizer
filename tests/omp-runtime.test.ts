@@ -452,7 +452,7 @@ describe("session lifecycle on one reused extension instance", () => {
       await endMessage(ext, assistantMessage(), two);
 
       const last = statuses.filter((s) => s.key === "omp-cache-stats").at(-1)?.value ?? "";
-      assert.match(last, /缓存请求命中次数：1\/1 次/, "session footer counts only the new session");
+      assert.match(last, /命中次数：1\/1 次/, "session footer counts only the new session");
 
       await ext.on("session_shutdown")({}, two);
       const shards = await ext.I.readValidStatsShardsV7();
@@ -519,10 +519,10 @@ describe("session lifecycle on one reused extension instance", () => {
 
       // 800 / (2000 + 3000) = 16%，一次命中 / 两次请求，缓存 800 / 总输入 5.00k。
       const text = published.at(-1)!.value!;
-      assert.match(text, /^OpenAI Cache \| 缓存命中率：16% \|/);
-      assert.match(text, /最近2次token命中率：16%/);
-      assert.match(text, /缓存请求命中次数：1\/2 次/);
-      assert.match(text, /缓存token\/总输入：800\/5\.00k$/);
+      assert.match(text, /^OpenAI Cache - 缓存率：16\.00% - /);
+      assert.match(text, /近2次 16\.00%/);
+      assert.match(text, /命中次数：1\/2 次/);
+      assert.match(text, /缓存tok\/总输入：800\/5\.00k$/);
 
       // 让下一次发布与当前文案不同，才能观察"是否发布"。
       ext.I.setRuntimeOptimizerEnabled(false);
@@ -534,7 +534,7 @@ describe("session lifecycle on one reused extension instance", () => {
       assert.ok(statuses.length > before, "model changed: footer republished");
       const after = statuses.at(-1)!;
       assert.equal(after.key, "omp-cache-stats");
-      assert.ok(after.value!.startsWith("缓存优化已关闭 · OpenAI Cache | "), after.value);
+      assert.ok(after.value!.startsWith("缓存优化已关闭 · OpenAI Cache - "), after.value);
     });
   });
 });

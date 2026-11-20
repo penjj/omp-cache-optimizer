@@ -61,8 +61,9 @@ export function formatTokenCount(value: number): string {
   return `${millions.toFixed(1)}M`;
 }
 
-/** 适配器标签展示形式："OpenAI cache" → "OpenAI Cache"。 */
+/** 适配器标签展示形式："Hunyuan cache" → "HY"，"OpenAI cache" → "OpenAI Cache"。 */
 export function localizeAdapterLabel(label: string): string {
+  if (label === "Hunyuan cache") return "HY";
   return label.endsWith(" cache") ? `${label.slice(0, -6)} Cache` : label;
 }
 
@@ -78,24 +79,24 @@ export function formatRecentTokenHitRate(samples: CacheUsageSample[], maxCount: 
   if (valid.length === 0) return undefined;
   const cachedInputTokens = valid.reduce((sum, sample) => sum + sample.cachedInputTokens, 0);
   const totalInputTokens = valid.reduce((sum, sample) => sum + sample.totalInputTokens, 0);
-  return `最近${valid.length}次token命中率：${formatTokenHitPercent({ cachedInputTokens, totalInputTokens })}`;
+  return `近${valid.length}次 ${formatTokenHitPercent({ cachedInputTokens, totalInputTokens })}`;
 }
 
 /**
- * Footer 文案（fork 的中文格式）：主指标为 token 命中率；有近期有效样本时追加最近 N 次命中率。
- * 例：`OpenAI Cache | 缓存命中率：40% | 最近2次token命中率：40% | 缓存请求命中次数：1/2 次 | 缓存token/总输入：800/2.00k`
+ * Footer 文案（fork 的中文格式）：主指标为 token 命中率；有近期有效样本时追加近 N 次命中率。
+ * 例：`HY - 缓存率：40.00% - 近2次 40.00% - 命中次数：1/2 次 - 缓存tok/总输入：800/2.00k`
  */
 export function formatCacheStats(adapter: CacheProviderAdapter, stats: CacheStats, recentSamples: CacheUsageSample[] = []): string {
   const recentHit = formatRecentTokenHitRate(recentSamples, 10);
   const writeText = adapter.showCacheWrite && stats.cacheWriteInputTokens > 0
-    ? ` | 写入token：${formatTokenCount(stats.cacheWriteInputTokens)}`
+    ? ` - 写入token：${formatTokenCount(stats.cacheWriteInputTokens)}`
     : "";
 
   return `${localizeAdapterLabel(adapter.label)}` +
-    ` | 缓存命中率：${formatTokenHitPercent(stats)}` +
-    (recentHit ? ` | ${recentHit}` : "") +
-    ` | 缓存请求命中次数：${stats.hitRequests}/${stats.totalRequests} 次` +
-    ` | 缓存token/总输入：${formatTokenCount(stats.cachedInputTokens)}/${formatTokenCount(stats.totalInputTokens)}` +
+    ` - 缓存率：${formatTokenHitPercent(stats)}` +
+    (recentHit ? ` - ${recentHit}` : "") +
+    ` - 命中次数：${stats.hitRequests}/${stats.totalRequests} 次` +
+    ` - 缓存tok/总输入：${formatTokenCount(stats.cachedInputTokens)}/${formatTokenCount(stats.totalInputTokens)}` +
     writeText;
 }
 
