@@ -1586,7 +1586,8 @@ export default function (pi: ExtensionAPI) {
     if (statusText === lastStatusText) return;
 
     lastStatusText = statusText;
-    ctx.ui.setStatus(STATUS_KEY, statusText);
+    const displayText = statusText === undefined ? undefined : ctx.ui.theme.fg("dim", statusText);
+    ctx.ui.setStatus(STATUS_KEY, displayText);
   }
 
   ensureRoutingRegistry();

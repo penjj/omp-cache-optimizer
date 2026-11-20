@@ -66,10 +66,10 @@ export function localizeAdapterLabel(label: string): string {
   return label.endsWith(" cache") ? `${label.slice(0, -6)} Cache` : label;
 }
 
-/** token 命中率：cachedInputTokens / totalInputTokens，0–100 整数百分比。 */
+/** token 命中率：cachedInputTokens / totalInputTokens，0–100 百分比（两位小数）。 */
 export function formatTokenHitPercent(stats: Pick<CacheStats, "cachedInputTokens" | "totalInputTokens">): string {
   if (stats.totalInputTokens <= 0) return "—";
-  return `${Math.round((stats.cachedInputTokens / stats.totalInputTokens) * 100)}%`;
+  return `${((stats.cachedInputTokens / stats.totalInputTokens) * 100).toFixed(2)}%`;
 }
 
 /** 最近 N 次有效样本（usage 完整且有输入）的 token 命中率；没有有效样本时返回 undefined。 */
@@ -109,11 +109,11 @@ export function prefixFooterStatus(statusText: string | undefined): string | und
 
 /**
  * Compute a hit-ratio percentage string for a value between 0 and 1.
- * Returns e.g. "75%", "0%", "100%", or "无数据" for zero total.
+ * Returns e.g. "75.00%", "0.00%", "100.00%", or "无数据" for zero total.
  */
 export function formatHitRatio(hits: number, total: number): string {
   if (total <= 0) return "无数据";
-  return `${Math.round((hits / total) * 100)}%`;
+  return `${((hits / total) * 100).toFixed(2)}%`;
 }
 
 /**
