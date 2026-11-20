@@ -76,10 +76,10 @@ export type OpenAIShapedFamily = { label: string; needles: string[]; pattern?: R
 export const OPENAI_SHAPED_FAMILIES: OpenAIShapedFamily[] = [
   { label: "Kimi cache", needles: ["kimi"] },
   { label: "Qwen cache", needles: ["qwen"] },
-  { label: "GLM cache", needles: ["glm"] },
+  { label: "GLM cache", needles: ["glm", "zhipu", "zhipuai", "bigmodel", "智谱"] },  // 智谱 GLM（含不含 "glm" 字样的别名）
   { label: "MiniMax cache", needles: ["minimax"] },
   { label: "Mimo cache", needles: ["xiaomimimo"], pattern: MIMO_MODEL_PATTERN },
-  { label: "Hunyuan cache", needles: ["hunyuan"] },
+  { label: "Hunyuan cache", needles: ["hunyuan", "hy4"] },  // hy4 / hy4flash / hy4std 等 HY 系列
   { label: "Mistral cache", needles: ["mistral", "mixtral", "codestral"] },
   { label: "Grok cache", needles: ["grok"], pattern: XAI_MODEL_PATTERN },
   { label: "Llama cache", needles: ["llama"] },
